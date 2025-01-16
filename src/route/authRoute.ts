@@ -1,10 +1,11 @@
 import express from "express";
 import { login, logout, register } from "../controller/authController";
+import { authenticateUser } from "../middleware/authentication";
 
-const Route = express.Router();
+const Router = express.Router();
 
-Route.post("/register", register);
-Route.post("/login", login);
-Route.get("/logout", logout);
+Router.post("/register", register);
+Router.post("/login", login);
+Router.delete("/logout", authenticateUser, logout);
 
-export default Route;
+export default Router;

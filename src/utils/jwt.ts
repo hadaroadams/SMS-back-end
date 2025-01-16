@@ -1,12 +1,14 @@
 import jwt from "jsonwebtoken";
 import { env } from "process";
-import { AttachCookiesTpResponse, Payload } from "../../types";
+import { AttachCookiesTpResponse, Payload, TokenUser } from "../../types";
 // const createJWT = ({ tokenUser }: CreateJWT) => {
 //   return jwt.sign(tokenUser, env.JWT_SECRET_ACCESS_TOKEN!);
 // };
 
-export const isTokenValid = (token: string, jwTsecretToken: string): Payload =>
-  jwt.verify(token, jwTsecretToken) as Payload;
+export const isTokenValid = (
+  token: string,
+  jwTsecretToken: string
+): TokenUser => jwt.verify(token, jwTsecretToken) as TokenUser;
 
 export const attachCookiesToResponse = ({
   res,

@@ -28,3 +28,5 @@ interface Payload extends JwtPayload {
   refreshToken?: string;
   accessTokenToken?: string;
 }
+
+type Role = "ADMIN" | "USER";

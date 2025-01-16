@@ -1,12 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../config/dbConnect";
 import { BadRequest, NotFound, Unauthenticated } from "../errors";
-import jwt from "jsonwebtoken";
-import { env } from "process";
 import bcrypt from "bcryptjs";
 import { createTokenUser } from "../utils/createTokenUser";
 import { attachCookiesToResponse } from "../utils/jwt";
-import { Prisma } from "@prisma/client";
 import { StatusCodes } from "http-status-codes";
 import { CustomRequest } from "../../types";
 const crypto = require("crypto");
@@ -80,12 +77,13 @@ export const login = async (
       refreshToken = existingToken.refreshToken;
       attachCookiesToResponse({ refreshToken, res, tokenUser });
       res.status(StatusCodes.OK).json({ user: tokenUser });
+      console.log(existingToken);
+      return;
     }
 
     refreshToken = crypto.randomBytes(40).toString("hex");
 
     const userAgent = req.headers["user-agent"]!;
-    console.log(req.header);
     const ip = req.ip!;
 
     await prisma.token.create({
@@ -109,6 +107,7 @@ export const logout = async (
   res: Response,
   next: NextFunction
 ) => {
+  // console.log(req);
   await prisma.token.delete({ where: { userId: req.user?.id } });
 
   res.cookie("accessToken", "logout", {
