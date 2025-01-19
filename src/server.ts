@@ -10,6 +10,7 @@ import { connectDB } from "./config/dbConnect";
 import rateLimit from "express-rate-limit";
 import authRoute from "./route/authRoute";
 import studentRoute from "./route/studentRoute";
+import teacherRoute from "./route/teacherRoute";
 import { notFound } from "./middleware/notFound";
 import errorHandleMiddleware from "./middleware/error-handler";
 
@@ -30,6 +31,7 @@ app.use(cookieParser(env.JWT_SECRET_TOKEN));
 
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/students", studentRoute);
+app.use("/api/v1/teachers", teacherRoute);
 
 app.use(notFound);
 app.use(errorHandleMiddleware);

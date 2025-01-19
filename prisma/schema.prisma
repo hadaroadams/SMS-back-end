@@ -5,13 +5,16 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["prismaSchemaFolder"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// USERS SCHEMA
 
 model User {
   id       String  @id @default(uuid())
@@ -33,24 +36,26 @@ model Token {
   createdAt    DateTime @default(now())
 }
 
+// STUDENTS SCHEMA
+
 model Student {
-  id          String    @id @default(uuid())
+  id          String           @id @default(uuid())
   firstName   String
   lastName    String
   dateOfBirth DateTime
   gender      Gender
-  email       String    @unique
+  email       String           @unique
   phone       String
   street      String
   city        String
   state       String
   zipCode     String
-  academic    Academic?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  academic    StudentAcademic?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 }
 
-model Academic {
+model StudentAcademic {
   id               String   @id @default(uuid())
   studentId        String   @unique
   enrollmentNumber String
@@ -61,12 +66,37 @@ model Academic {
   updatedAt        DateTime @updatedAt
 }
 
-enum Role {
-  USER
-  ADMIN
+
+// TEACHERS SCHEMA
+
+model Teacher {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  dateOfBirth DateTime
+  gender      Gender
+  email       String   @unique
+  phone       String
+  street      String
+  city        String
+  state       String
+  zipCode     String
+  hireDate    DateTime
+  subjects    String[]
+  salary      Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
+
+
+// EMUMS
 
 enum Gender {
   MALE
   FEMALE
+}
+
+enum Role {
+  USER
+  ADMIN
 }
